@@ -1,7 +1,7 @@
 '''
 @Author: your name
 @Date: 2020-05-23 23:41:50
-@LastEditTime: 2020-05-24 00:25:32
+@LastEditTime: 2020-05-24 00:31:27
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: /y/股票策略/tools/gupiao_fenlei.py
@@ -12,6 +12,9 @@ from pathlib import Path
 import os
 
 def jj_fl():
+    '''
+    该函数作用将股票按照行业分剋并保存到file文件目录下
+    '''
     file_name = "file"
     my_file = Path(file_name)
     if my_file.exists():
