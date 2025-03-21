@@ -15,7 +15,7 @@ def test1(bs):
     print(rs.get_row_data())
     
 class Interface:
-    def __init__(self,bs,start_date='2020-06-15',end_date='2020-06-16'):
+    def __init__(self,bs,start_date='2025-01-14',end_date='2025-01-15'):
         #### 登陆系统 ####
         self.bs_ = bs 
         self.tatol_=0
@@ -25,16 +25,20 @@ class Interface:
         print('login respond  error_msg:'+lg.error_msg)
         self.industry_list_ = self.get_industry_list()
         self.hsitory_k_data_ = []
+        # print(self.industry_list_)
         for val in self.industry_list_:
             data = self.get_history_k_data(val[1],start_date,end_date)
-#            print(data)
+            # print(data)
             if len(data) == 2:
                 self.hsitory_k_data_.append(data) 
  #               print(data[1])
+                # print("strategy")
                 self.strategy(data[0],data[1])
             elif len(data) == 3:
+                print("strategy3")
                 self.strategy_3(data[0],data[1],data[2])
             elif len(data) == 1:
+                print("strategy4")
                 self.strategy_4(data[0])
         print("hstory_k_data_size:%d",len(self.hsitory_k_data_))
         print("----------------:%d",self.tatol_) 
@@ -56,7 +60,7 @@ class Interface:
                             v = 0.001
                         if  ((float(data2[2]) - float(data2[4])) / v ) > bz:
                             if (float(data2[3]) - float(data2[5])) / v < 10:
-                                print(data2)
+                                print("chuizixian",data2)
                                 cmd = "grep -r  " + data2[1] + " /home/zn/y/股票策略/file "
                                 os.system(cmd)
 

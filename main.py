@@ -23,3 +23,4 @@ if __name__ == "__main__":
     gupiao_fenlei.jj_fl()
     lg = bs.login()
     celuoe.test1(bs)
+    
