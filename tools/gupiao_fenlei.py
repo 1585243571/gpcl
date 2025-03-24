@@ -11,6 +11,43 @@ import pandas as pd
 from pathlib import Path
 import os
 
+def guxi(name,date_start,date_end):
+    lg = bs.login()
+    #  rs=bs.query_stock_basic(code_name="海王生物")
+    rs=bs.query_stock_basic(code_name=name)
+    list_=[]
+    while (rs.error_code == '0') & rs.next():
+        # print(rs.get_row_data())
+
+        # type_.add(val[3])
+    #     # 获取一条记录，将记录合并在一起
+        list_.append(rs.get_row_data())
+    print(list_)
+    code=list_[0][0]
+    # 显示登陆返回信息
+    print('login respond error_code:'+lg.error_code)
+    print('login respond  error_msg:'+lg.error_msg)
+    offset=date_end-date_start
+    for i in range(offset):
+        date_=date_start+i 
+        data_=bs.query_dividend_data(code,str(date_)).data
+        # print(data_)
+        if len(data_) !=0:
+             k_=bs.query_history_k_data_plus(code,
+        "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
+        data_[0][7],data_[0][7]).data
+             guxilu=0.00
+             try:
+                  guxilu= float(data_[0][9])/float(k_[0][5])*100    
+             except ValueError as e:
+                print(f"ValueError异常 {e}")
+                guxilu=0.00
+                print(guxilu)
+              
+             print(str(date_)+" 当日股价 "+k_[0][5]+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu) +" "+data_[0][10]+" "+data_[0][12]+'\n')
+             
+
+
 def jj_fl():
     '''
     该函数作用将股票按照行业分剋并保存到file文件目录下
@@ -27,8 +64,8 @@ def jj_fl():
     print('login respond error_code:'+lg.error_code)
     print('login respond  error_msg:'+lg.error_msg)
     # 获取行业分类数据
-    rs = bs.query_stock_industry()
-    
+    # rs = bs.query_stock_industry()
+    rs=bs.query_all_stock(day="2017-06-30")
     #rs = bs.query_stock_basic(code_name="浦发银行")
     print('query_stock_industry error_code:'+rs.error_code)
     print('query_stock_industry respond  error_msg:'+rs.error_msg)
@@ -38,7 +75,7 @@ def jj_fl():
     type_ = set()
     while (rs.error_code == '0') & rs.next():
         val = rs.get_row_data()
-        type_.add(val[3])
+        # type_.add(val[3])
     #     # 获取一条记录，将记录合并在一起
         industry_list.append(rs.get_row_data())
     # result = pd.DataFrame(industry_list, columns=rs.fields)
@@ -47,25 +84,23 @@ def jj_fl():
     # print(result)
     print("股票数目:%d\n",len(industry_list))
     for data in industry_list:
-    # print("--------------")
-        #print(data)
-        for val in type_:
-            if (len(val) == 0) | (len(data) == 0):
-                continue
-            
-            if val == data[3]:
-                name = "file/" + val + ".txt"
+                print(data)
+                name = "file/" + "gupiao" + ".txt"
                 # print(name)
                 fo = open(name, "a+",encoding='utf-8')
                 # print(data[2])
                 #打印股息=
-                data_=bs.query_dividend_data(data[1],'2024').data
+                # print(data)
+                if len(data) == 0:
+                     continue
+                data_=bs.query_dividend_data(data[0],'2021').data
                 # bs.query_history_k_data_plus
+                # print(data_)
                 if len(data_) !=0:
                     # print(data_)
                     # print(data[2]," ",data_[0][9],data_[0][10],data_[0][12])
                     #data[0][8]股息日
-                    k_=bs.query_history_k_data_plus(data[1],
+                    k_=bs.query_history_k_data_plus(data[0],
         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
         data_[0][7],data_[0][7]).data
                     #k_[0][5]收盘价 data_[0][9]股息
@@ -81,12 +116,12 @@ def jj_fl():
                         guxilu=0.00
                         print(guxilu)
 
-
-                    print(guxilu)
+                    if guxilu > 7:
+                         print(" 当日股价 "+k_[0][5]+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu)+" "+data[1] + " " + data[2] +" "+data_[0][10]+" "+data_[0][12]+'\n')
                     
                     fo.writelines(" 当日股价 "+k_[0][5]+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu)+" "+data[1] + " " + data[2] +" "+data_[0][10]+" "+data_[0][12]+'\n')
                     continue
-                fo.writelines(data[1] + " " + data[2]+'\n')
+                # fo.writelines(data[1] + " " + data[2]+'\n')
                 
         
     #登出系统
