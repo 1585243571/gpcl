@@ -11,8 +11,7 @@ import pandas as pd
 from pathlib import Path
 import os
 
-def guxi(name,date_start,date_end):
-    lg = bs.login()
+def guxi(bs,name,date_start,date_end,shuju):
     #  rs=bs.query_stock_basic(code_name="海王生物")
     rs=bs.query_stock_basic(code_name=name)
     list_=[]
@@ -25,8 +24,6 @@ def guxi(name,date_start,date_end):
     print(list_)
     code=list_[0][0]
     # 显示登陆返回信息
-    print('login respond error_code:'+lg.error_code)
-    print('login respond  error_msg:'+lg.error_msg)
     offset=date_end-date_start
     for i in range(offset):
         date_=date_start+i 
@@ -37,14 +34,24 @@ def guxi(name,date_start,date_end):
         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
         data_[0][7],data_[0][7]).data
              guxilu=0.00
+             guxi=0.00
+             for i in range(len(data_)):
+                 ggg=0.0
+                 try:
+                    ggg=float(data_[i][9])
+                 except ValueError as e:
+                    ggg=0.0
+                 guxi=guxi+ggg
+
              try:
-                  guxilu= float(data_[0][9])/float(k_[0][5])*100    
+                  guxilu= guxi/float(k_[0][5])*100    
              except ValueError as e:
                 print(f"ValueError异常 {e}")
                 guxilu=0.00
                 print(guxilu)
-              
-             print(str(date_)+" 当日股价 "+k_[0][5]+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu) +" "+data_[0][10]+" "+data_[0][12]+'\n')
+
+             shuju.append([name,str(date_),k_[0][5],str(guxi),data_[0][9],str(guxilu),data_[0][10],data_[0][12]]) 
+             print(str(date_)+" 当日股价 "+k_[0][5]+"总股息 "+str(guxi)+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu) +" "+data_[0][10]+" "+data_[0][12]+'\n')
              
 
 
