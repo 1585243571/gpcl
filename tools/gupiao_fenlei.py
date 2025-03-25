@@ -51,7 +51,7 @@ def guxi(bs,name,date_start,date_end,shuju):
                 print(guxilu)
 
              shuju.append([name,str(date_),k_[0][5],str(guxi),data_[0][9],str(guxilu),data_[0][10],data_[0][12]]) 
-             print(str(date_)+" 当日股价 "+k_[0][5]+"总股息 "+str(guxi)+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu) +" "+data_[0][10]+" "+data_[0][12]+'\n')
+            #  print(str(date_)+" 当日股价 "+k_[0][5]+"总股息 "+str(guxi)+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu) +" "+data_[0][10]+" "+data_[0][12]+'\n')
              
 
 

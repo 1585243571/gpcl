@@ -7,11 +7,27 @@ import os
 from prettytable import PrettyTable
 import gupiao_fenlei
 import celuoe
+
+def tab(shuju):
+    data = [
+    ["code","date", "当日股价", "总股息","股息","股息率","税前税后股息","派发信息"]]
+    for iterm in shuju:
+        if len(iterm) == 0:
+            continue
+        data.append(iterm)
+    table = PrettyTable()
+    table.field_names = data[0]
+    for row in data[1:]:
+        table.add_row(row)
+    print(table)
+
+
+
 if __name__ == "__main__":
 
 
-    data = [
-    ["code","date", "当日股价", "总股息","股息","股息率","税前税后股息","派发信息"]]
+    # data = [
+    # ["code","date", "当日股价", "总股息","股息","股息率","税前税后股息","派发信息"]]
     
     #  gupiao_fenlei.jj_fl()
 
@@ -22,16 +38,17 @@ if __name__ == "__main__":
     for i in name:
         shuju=[[]]
         gupiao_fenlei.guxi(bs,i,2000,2025,shuju)
-        for iterm in shuju:
-            if len(iterm) == 0:
-                continue
-            print(iterm)
-            data.append(iterm)
+        tab(shuju)
+        # for iterm in shuju:
+        #     if len(iterm) == 0:
+        #         continue
+        #     print(iterm)
+        #     data.append(iterm)
 
     
-    table = PrettyTable()
-    table.field_names = data[0]
-    for row in data[1:]:
-        print(row)
-        table.add_row(row)
-    print(table)
+    # table = PrettyTable()
+    # table.field_names = data[0]
+    # for row in data[1:]:
+    #     print(row)
+    #     table.add_row(row)
+    # print(table)
