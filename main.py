@@ -14,20 +14,22 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
-def send_email(message):
+def send_email(mes):
     # 发件人邮箱及授权码（授权码需要在QQ邮箱中开启SMTP服务并获取）
     sender_email = '1585243571@qq.com'
-    smtp_auth_code = '推送吗需要自己获取'
+    smtp_auth_code = ''
 
     # 收件人邮箱地址
-    recipient_email = '1585243571@qq.com'
+    recipient_email = '1181316768@qq.com'
+    # recipient_email = '1585243571@qq.com'
 
     # 邮件内容
     subject = 'Test Message'
-    body = message
+    body = f"<pre>{mes}</pre>"
 
     # 创建MIMEText对象
-    message = MIMEText(body, 'plain', 'utf-8')
+    
+    message = MIMEText(body, 'html')
     message['From'] = Header(sender_email)
     message['To'] = Header(recipient_email)
     message['Subject'] = Header(subject)
@@ -66,7 +68,7 @@ def tab(shuju):
     for row in data[1:]:
         table.add_row(row)
     print(str(table))
-    send_email(str(table))
+    send_email(table.get_string())
 
 
 
@@ -81,8 +83,9 @@ if __name__ == "__main__":
     lg = bs.login()
     # celuoe.test1(bs)
 #输入股票名称即可查找2000-20025年之间的股息
-    name=["冀中能源","南京银行","民生银行"
-          ,"江苏银行","中国神华","浙商银行","上海银行","山西焦煤"]
+    # name=["冀中能源","南京银行","民生银行"
+    #       ,"江苏银行","中国神华","浙商银行","上海银行","山西焦煤"]
+    name=["山西焦煤"]
     for i in name:
         shuju=[[]]
         gupiao_fenlei.guxi(bs,i,2000,2026,shuju)
