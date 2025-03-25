@@ -8,6 +8,14 @@ from prettytable import PrettyTable
 import gupiao_fenlei
 import celuoe
 
+def init_code_list(file_name,list_):
+    with open('example.txt', 'r') as file:
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            print(line.strip())
+
 def tab(shuju):
     data = [
     ["code","date", "当日股价", "总股息","股息","股息率","税前税后股息","派发信息"]]
@@ -34,10 +42,11 @@ if __name__ == "__main__":
     lg = bs.login()
     # celuoe.test1(bs)
 #输入股票名称即可查找2000-20025年之间的股息
-    name=["冀中能源","南京银行","民生银行","江苏银行"]
+    name=["冀中能源","南京银行","民生银行"
+          ,"江苏银行","中国神华","浙商银行","上海银行","山西焦煤"]
     for i in name:
         shuju=[[]]
-        gupiao_fenlei.guxi(bs,i,2000,2025,shuju)
+        gupiao_fenlei.guxi(bs,i,2000,2026,shuju)
         tab(shuju)
         # for iterm in shuju:
         #     if len(iterm) == 0:

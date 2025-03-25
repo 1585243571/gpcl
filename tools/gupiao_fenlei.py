@@ -10,7 +10,7 @@ import baostock as bs
 import pandas as pd
 from pathlib import Path
 import os
-
+from datetime import datetime, timedelta
 def guxi(bs,name,date_start,date_end,shuju):
     #  rs=bs.query_stock_basic(code_name="海王生物")
     rs=bs.query_stock_basic(code_name=name)
@@ -51,6 +51,17 @@ def guxi(bs,name,date_start,date_end,shuju):
                 print(guxilu)
 
              shuju.append([name,str(date_),k_[0][5],str(guxi),data_[0][9],str(guxilu),data_[0][10],data_[0][12]]) 
+             if date_ == 2024:
+                 # 获取当前日期和时间
+                 now = datetime.now()
+                 yesterday = now - timedelta(days=1)
+                 formatted_date = yesterday.strftime('%Y-%m-%d')
+                 print(formatted_date)
+                 k_25=bs.query_history_k_data_plus(code,
+        "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",str(formatted_date),
+                 str(formatted_date)).data
+                 shuju.append([name,str(formatted_date),k_25[0][5],str(guxi),data_[0][9],str(guxi/float(k_25[0][5])*100),data_[0][10],data_[0][12]])
+                 
             #  print(str(date_)+" 当日股价 "+k_[0][5]+"总股息 "+str(guxi)+" 股息 "+data_[0][9]+" 股息率 "+str(guxilu) +" "+data_[0][10]+" "+data_[0][12]+'\n')
              
 
