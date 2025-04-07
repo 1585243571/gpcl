@@ -9,7 +9,8 @@
 import baostock as bs
 import pandas as pd
 import os
-
+import datetime
+import holidays
 def test1(bs):
     rs = bs.query_stock_industry()
     print(rs.get_row_data())

@@ -8,7 +8,7 @@ from prettytable import PrettyTable
 import gupiao_fenlei
 import celuoe
 
-
+import meiyuan_huilv
 
 import smtplib
 from email.mime.text import MIMEText
@@ -17,14 +17,15 @@ from email.header import Header
 def send_email(mes):
     # 发件人邮箱及授权码（授权码需要在QQ邮箱中开启SMTP服务并获取）
     sender_email = '1585243571@qq.com'
-    smtp_auth_code = ''
+    smtp_auth_code = 'mmgywgiufbwvgaed'
 
     # 收件人邮箱地址
-    recipient_email = '1181316768@qq.com'
-    # recipient_email = '1585243571@qq.com'
+    # recipient_email = '1181316768@qq.com'
+    recipient_email = '1585243571@qq.com'
+    #recipient_email = '978524088@qq.com'
 
     # 邮件内容
-    subject = 'Test Message'
+    subject = '今日股票推荐'
     body = f"<pre>{mes}</pre>"
 
     # 创建MIMEText对象
@@ -68,38 +69,43 @@ def tab(shuju):
     for row in data[1:]:
         table.add_row(row)
     print(str(table))
-    send_email(table.get_string())
+    # send_email(table.get_string())
 
 
 
 if __name__ == "__main__":
 
 
-    # data = [
-    # ["code","date", "当日股价", "总股息","股息","股息率","税前税后股息","派发信息"]]
+    data = [
+    ["code","date", "当日股价", "总股息","股息","股息率","税前税后股息","派发信息"]]
     
     #  gupiao_fenlei.jj_fl()
 
     lg = bs.login()
     # celuoe.test1(bs)
 #输入股票名称即可查找2000-20025年之间的股息
-    # name=["冀中能源","南京银行","民生银行"
-    #       ,"江苏银行","中国神华","浙商银行","上海银行","山西焦煤"]
-    name=["山西焦煤"]
+    name=["冀中能源","南京银行","民生银行"
+          ,"江苏银行","中国神华","浙商银行","上海银行","山西焦煤","工商银行"]
+    # name=["山西焦煤"]
     for i in name:
         shuju=[[]]
         gupiao_fenlei.guxi(bs,i,2000,2026,shuju)
-        tab(shuju)
-        # for iterm in shuju:
-        #     if len(iterm) == 0:
-        #         continue
-        #     print(iterm)
-        #     data.append(iterm)
+        # tab(shuju)
+        for iterm in shuju:
+            if len(iterm) == 0:
+                continue
+            # print(iterm)
+            data.append(iterm)
 
     
-    # table = PrettyTable()
-    # table.field_names = data[0]
-    # for row in data[1:]:
-    #     print(row)
-    #     table.add_row(row)
-    # print(table)
+    table = PrettyTable()
+    table.field_names = data[0]
+    for row in data[1:]:
+        # print(row)
+        table.add_row(row)
+    hl=meiyuan_huilv.get_usd_to_cny_exchange_rate('eb87ab46559ea72ee0376f8c')
+    table.add_row(["美元汇率",str(hl),"","","","","",""])
+    print(table)
+
+    send_email(table.get_string())
+

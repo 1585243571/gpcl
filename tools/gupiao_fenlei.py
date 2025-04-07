@@ -5,12 +5,17 @@
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: /y/股票策略/tools/gupiao_fenlei.py
-'''
+import'''
+
+
+
+import jie_jia_ri_pan_duan
 import baostock as bs
 import pandas as pd
 from pathlib import Path
 import os
 from datetime import datetime, timedelta
+import holidays
 def guxi(bs,name,date_start,date_end,shuju):
     #  rs=bs.query_stock_basic(code_name="海王生物")
     rs=bs.query_stock_basic(code_name=name)
@@ -54,8 +59,15 @@ def guxi(bs,name,date_start,date_end,shuju):
              if date_ == 2024:
                  # 获取当前日期和时间
                  now = datetime.now()
-                 yesterday = now - timedelta(days=1)
+                 #yesterday = now - timedelta(days=1)
+                 yesterday = now - timedelta(days=6) 
+                 if jie_jia_ri_pan_duan.is_a_share_open(yesterday) == False:
+                     print("大a修盘")
+                     return
                  formatted_date = yesterday.strftime('%Y-%m-%d')
+                # cn_holidays = holidays.China()
+                
+
                  print(formatted_date)
                  k_25=bs.query_history_k_data_plus(code,
         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",str(formatted_date),
